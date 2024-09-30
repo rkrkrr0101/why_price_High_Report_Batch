@@ -1,9 +1,17 @@
 스탭순서
-    1.랭크api호출로 목록 받아오기(리더)
+    1.랭크api호출로 목록 받아오기(리더),https://www.perplexity.ai/search/koteulrin-seupeuring-baeciro-a-Zlj_pcQJTyCudc1tW9Ga4A
     2.각각 목록 하나당 레포트 생성
-        1.해당 주식 레포트가 db에 유효한지 확인
+        1.해당 주식 레포트가 db에 유효한지 확인(프로세서)
         2-1.유효하지않거나 없다면 요청
-            외부api로 요청
-            받은데이터 저장
+            외부api로 요청(프로세서)
+            받은데이터 저장(라이터)
         2-2.유효하다면 종료
+
+레포트 가져오고
+api호출은 HighRisersFetcher 가져오고
+레포트유효확인과 생성은 CreateReportService.createReport()와 reportCachesRepository.isCacheValid()가져오고
+데이터저장은 reportCachesRepository.save가져오고
+
+api리더
+https://velog.io/@ckstn0777/Spring-Batch-api-reader-%EB%A7%8C%EB%93%A4%EA%B8%B0-1%ED%8E%B8-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%9A%94%EC%B2%AD-%EB%B0%8F-%ED%8C%8C%EC%8B%B1%ED%95%98%EA%B8%B0
 

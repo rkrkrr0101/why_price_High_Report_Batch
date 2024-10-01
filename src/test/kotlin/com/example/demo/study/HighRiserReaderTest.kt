@@ -1,6 +1,6 @@
 package com.example.demo.study
 
-import com.example.demo.batch.HighRiserReader
+import com.example.demo.batch.component.HighRiserReader
 import com.example.demo.infra.adapter.api.HighRisersFetcher
 import com.example.demo.infra.share.impl.ApiHelperImpl
 import org.junit.jupiter.api.Test

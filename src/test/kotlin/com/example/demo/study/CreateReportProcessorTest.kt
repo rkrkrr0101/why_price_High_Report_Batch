@@ -1,6 +1,6 @@
 package com.example.demo.study
 
-import com.example.demo.batch.CreateReportProcessor
+import com.example.demo.batch.component.CreateReportProcessor
 import com.example.demo.infra.adapter.persistence.ReportCachesJpaRepository
 import com.example.demo.infra.adapter.persistence.ReportCachesRepositoryImpl
 import com.example.demo.infra.share.impl.CustomDateTimeImpl

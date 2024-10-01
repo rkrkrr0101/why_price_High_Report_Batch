@@ -1,5 +1,6 @@
-package com.example.demo.infra.domain
+package com.example.demo.infra.adapter.persistence
 
+import com.example.demo.infra.domain.Report
 import jakarta.persistence.AttributeOverride
 import jakarta.persistence.AttributeOverrides
 import jakarta.persistence.Column
@@ -8,7 +9,6 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
-
 import java.time.LocalDateTime
 
 @Entity

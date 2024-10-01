@@ -1,9 +1,9 @@
 package com.example.demo.batch
 
-import com.example.demo.infra.adapter.HighRisersFetcher
+import com.example.demo.infra.adapter.api.HighRisersFetcher
 import org.springframework.batch.item.ItemReader
 
-class HighRiserItemReader(
+class HighRiserReader(
     private val highRisersFetcher: HighRisersFetcher
 ): ItemReader<String> {
     private var nextIndex=0

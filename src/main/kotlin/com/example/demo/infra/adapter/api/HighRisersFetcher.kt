@@ -1,4 +1,4 @@
-package com.example.demo.infra.adapter
+package com.example.demo.infra.adapter.api
 
 
 import com.example.demo.infra.share.port.ApiHelper

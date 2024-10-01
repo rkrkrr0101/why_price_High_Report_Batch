@@ -4,18 +4,20 @@ package com.example.demo.infra.share.adapter.responser
 import com.example.demo.infra.domain.Report
 import com.example.demo.infra.share.adapter.responser.infrastructure.PerplexityApi
 import com.example.demo.infra.share.adapter.responser.infrastructure.PerplexityChatOptions
+import com.example.demo.infra.share.port.CreateReportPort
 import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.chat.messages.SystemMessage
 import org.springframework.ai.chat.messages.UserMessage
 import org.springframework.ai.chat.model.ChatResponse
 import org.springframework.ai.chat.prompt.Prompt
 import org.springframework.ai.openai.OpenAiChatModel
+import org.springframework.stereotype.Component
 import rkrk.whyprice.config.ApiConfig
 
-
+@Component
 class GptResponser(
     private val customDateTime: com.example.demo.infra.share.port.CustomDateTime,
-){
+):CreateReportPort{
     private val perplexityOptions =
         PerplexityChatOptions
             .builder()
@@ -31,7 +33,7 @@ class GptResponser(
             ).build()
 
 
-    fun createReport(
+    override fun createReport(
         assetName: String,
         volatilityTime: Int,
     ): Report {

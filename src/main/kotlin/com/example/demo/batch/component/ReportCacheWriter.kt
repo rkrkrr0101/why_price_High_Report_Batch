@@ -6,8 +6,8 @@ import org.springframework.batch.item.Chunk
 import org.springframework.batch.item.ItemWriter
 
 class ReportCacheWriter(
-    private val repository: ReportCachesRepository
-):ItemWriter<Report> {
+    private val repository: ReportCachesRepository,
+) : ItemWriter<Report> {
     override fun write(chunk: Chunk<out Report>) {
         chunk.forEach { repository.saveOrUpdate(it) }
     }

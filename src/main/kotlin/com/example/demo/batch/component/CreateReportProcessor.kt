@@ -5,18 +5,16 @@ import com.example.demo.infra.domain.Report
 import com.example.demo.infra.share.port.CreateReportPort
 import org.springframework.batch.item.ItemProcessor
 
-
 class CreateReportProcessor(
     private val repository: ReportCachesRepository,
-    private val createReportPort: CreateReportPort
-): ItemProcessor<String,Report> {
+    private val createReportPort: CreateReportPort,
+) : ItemProcessor<String, Report> {
     override fun process(item: String): Report? {
-        if(repository.isCacheValid(item)){
+        if (repository.isCacheValid(item)) {
             return null
         }
         return createReport(item)
     }
-    private fun createReport(stockName:String):Report{
-       return createReportPort.createReport(stockName)
-    }
+
+    private fun createReport(stockName: String): Report = createReportPort.createReport(stockName)
 }

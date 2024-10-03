@@ -1,5 +1,3 @@
 package com.example.demo.batch
 
-
-class HighRiserBatch {
-}
+class HighRiserBatch

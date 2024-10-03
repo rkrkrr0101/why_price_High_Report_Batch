@@ -1,10 +1,8 @@
 package com.example.demo.infra.adapter.api
 
-
 import com.example.demo.infra.share.port.ApiHelper
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
@@ -13,12 +11,9 @@ import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
 import rkrk.whyprice.config.ApiConfig
 
-
-
-
 class HighRisersFetcher(
     private val apiHelper: ApiHelper,
-)  {
+) {
     fun fetch(): List<String> {
         val restTemplate = apiHelper.createRestTemplate()
         val url = apiHelper.buildUrl(getBaseUrl(), createQueryParams())

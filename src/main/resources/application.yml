@@ -1,4 +1,7 @@
 spring:
+  batch:
+    jdbc:
+      initialize-schema: always
   main:
     web-application-type: none
   application:
@@ -13,10 +16,10 @@ spring:
       enabled: true
       path: /h2-console
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:~/test123;DATABASE_TO_UPPER=FALSE;CASE_INSENSITIVE_IDENTIFIERS=true;MODE=MySQL;
-    username: sa
-    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/why_price?serverTimezone=Asia/Seoul
+    username: ${MYSQL_ID}
+    password: ${MYSQL_KEY}
   jpa:
     open-in-view: true
     properties:
@@ -29,5 +32,5 @@ spring:
     hibernate:
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
-      ddl-auto: create-drop
+      ddl-auto: update
 

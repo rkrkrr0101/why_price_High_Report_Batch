@@ -13,11 +13,9 @@ import org.springframework.batch.core.Step
 import org.springframework.batch.core.configuration.annotation.JobScope
 import org.springframework.batch.core.configuration.annotation.StepScope
 import org.springframework.batch.core.job.builder.JobBuilder
+import org.springframework.batch.core.launch.support.RunIdIncrementer
 import org.springframework.batch.core.repository.JobRepository
 import org.springframework.batch.core.step.builder.StepBuilder
-import org.springframework.batch.item.ItemProcessor
-import org.springframework.batch.item.ItemReader
-import org.springframework.batch.item.ItemWriter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.PlatformTransactionManager
@@ -29,7 +27,8 @@ class HighRiserConfig {
         jobRepository: JobRepository,
         highRiserStep: Step,
     ): Job =
-        JobBuilder("highRiserJob", jobRepository)
+        JobBuilder("highRiserRankJob", jobRepository)
+            .incrementer(RunIdIncrementer())
             .start(highRiserStep)
             .build()
 
@@ -38,9 +37,9 @@ class HighRiserConfig {
     fun highRiserStep(
         jobRepository: JobRepository,
         transactionManager: PlatformTransactionManager,
-        highRiserReader: ItemReader<String>,
-        createReportProcessor: ItemProcessor<String, Report>,
-        reportCacheWriter: ItemWriter<Report>,
+        highRiserReader: HighRiserReader,
+        createReportProcessor: CreateReportProcessor,
+        reportCacheWriter: ReportCacheWriter,
     ): Step =
         StepBuilder("highRiserStep", jobRepository)
             .chunk<String, Report>(3, transactionManager)
@@ -51,7 +50,7 @@ class HighRiserConfig {
 
     @StepScope
     @Bean
-    fun highRiserReader(highRisersFetcher: HighRisersFetcher): ItemReader<String> = HighRiserReader(highRisersFetcher)
+    fun highRiserReader(highRisersFetcher: HighRisersFetcher): HighRiserReader = HighRiserReader(highRisersFetcher)
 
     @Bean
     fun highRisersFetcher(apiHelper: ApiHelper): HighRisersFetcher = HighRisersFetcher(apiHelper)
@@ -61,9 +60,9 @@ class HighRiserConfig {
     fun createReportProcessor(
         reportCachesRepository: ReportCachesRepository,
         createReportPort: CreateReportPort,
-    ): ItemProcessor<String, Report> = CreateReportProcessor(reportCachesRepository, createReportPort)
+    ): CreateReportProcessor = CreateReportProcessor(reportCachesRepository, createReportPort)
 
     @StepScope
     @Bean
-    fun reportCacheWriter(reportCachesRepository: ReportCachesRepository): ItemWriter<Report> = ReportCacheWriter(reportCachesRepository)
+    fun reportCacheWriter(reportCachesRepository: ReportCachesRepository): ReportCacheWriter = ReportCacheWriter(reportCachesRepository)
 }

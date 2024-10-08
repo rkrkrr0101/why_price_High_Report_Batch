@@ -5,7 +5,7 @@ import com.example.demo.infra.domain.Report
 import com.example.demo.infra.share.port.CreateReportPort
 import org.springframework.batch.item.ItemProcessor
 
-class CreateReportProcessor(
+open class CreateReportProcessor(
     private val repository: ReportCachesRepository,
     private val createReportPort: CreateReportPort,
 ) : ItemProcessor<String, Report> {

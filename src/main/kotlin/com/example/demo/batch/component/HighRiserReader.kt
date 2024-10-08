@@ -3,7 +3,7 @@ package com.example.demo.batch.component
 import com.example.demo.infra.adapter.api.HighRisersFetcher
 import org.springframework.batch.item.ItemReader
 
-class HighRiserReader(
+open class HighRiserReader(
     private val highRisersFetcher: HighRisersFetcher,
 ) : ItemReader<String> {
     private var nextIndex = 0

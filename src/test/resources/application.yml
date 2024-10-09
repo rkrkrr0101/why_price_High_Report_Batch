@@ -7,7 +7,9 @@ spring:
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:test;
-
+  ai:
+    openai:
+      api-key: notUsed #사용하지않지만 항목이 있어야 에러가 안남,openAiChatModel을 개조해서 써서 이럼
   jpa:
     hibernate:
       ddl-auto: create

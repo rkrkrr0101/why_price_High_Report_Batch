@@ -6,6 +6,8 @@ import com.example.demo.batch.component.NonTransientExceptionListener
 import com.example.demo.batch.component.ReportCacheWriter
 import com.example.demo.infra.adapter.api.HighRisersFetcher
 import com.example.demo.infra.adapter.persistence.ReportCachesRepository
+import com.example.demo.infra.adapter.persistence.HotStockRepository
+import com.example.demo.infra.adapter.db.HotStockFetcher
 import com.example.demo.infra.domain.Report
 import com.example.demo.infra.share.port.ApiHelper
 import com.example.demo.infra.share.port.CreateReportPort
@@ -56,10 +58,10 @@ class HighRiserConfig {
 
     @StepScope
     @Bean
-    fun highRiserReader(highRisersFetcher: HighRisersFetcher): HighRiserReader = HighRiserReader(highRisersFetcher)
+    fun highRiserReader(hotStockFetcher: HotStockFetcher): HighRiserReader = HighRiserReader(hotStockFetcher)
 
     @Bean
-    fun highRisersFetcher(apiHelper: ApiHelper): HighRisersFetcher = HighRisersFetcher(apiHelper)
+    fun hotStockFetcher(hotStockRepository: HotStockRepository): HotStockFetcher = HotStockFetcher(hotStockRepository)
 
     @StepScope
     @Bean

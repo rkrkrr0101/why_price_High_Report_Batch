@@ -2,12 +2,12 @@ package com.example.demo.infra.share.adapter.responser
 
 
 import com.example.demo.infra.domain.Report
-import com.example.demo.infra.share.adapter.responser.infrastructure.PerplexityApi
-import com.example.demo.infra.share.adapter.responser.infrastructure.PerplexityChatOptions
 import com.example.demo.infra.share.port.CreateReportPort
 import org.springframework.ai.chat.client.ChatClient
+import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor
 import org.springframework.ai.chat.messages.SystemMessage
 import org.springframework.ai.chat.messages.UserMessage
+import org.springframework.ai.chat.model.ChatModel
 import org.springframework.ai.chat.model.ChatResponse
 import org.springframework.ai.chat.prompt.Prompt
 import org.springframework.ai.openai.OpenAiChatModel
@@ -17,20 +17,13 @@ import rkrk.whyprice.config.ApiConfig
 @Component
 class GptResponser(
     private val customDateTime: com.example.demo.infra.share.port.CustomDateTime,
+    private val model: ChatModel
 ):CreateReportPort{
-    private val perplexityOptions =
-        PerplexityChatOptions
-            .builder()
-            .searchRecencyFilter("week")
-            .withModel("llama-3.1-sonar-small-128k-online")
-            .withTemperature(0.8F)
-            .build()
-
     private val chatClient: ChatClient =
         ChatClient
-            .builder(
-                OpenAiChatModel(PerplexityApi(ApiConfig.getPerplexityKey()), perplexityOptions),
-            ).build()
+            .builder(model)
+            .defaultAdvisors(SimpleLoggerAdvisor())
+            .build()
 
 
     override fun createReport(
@@ -47,7 +40,7 @@ class GptResponser(
             chatClient
                 .prompt(prompt)
                 .call()
-                .chatResponse()
+                .chatResponse()?:throw NotImplementedError()
         return response
     }
 
@@ -79,5 +72,5 @@ class GptResponser(
     private fun responseToReport(
         assetName: String,
         response: ChatResponse,
-    ) = Report(assetName, response.result.output.content, customDateTime.getNow())
+    ) = Report(assetName, response.result.output.text, customDateTime.getNow())
 }

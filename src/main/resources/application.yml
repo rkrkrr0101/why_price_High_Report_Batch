@@ -10,7 +10,14 @@ spring:
     import: optional:file:.env[.properties]
   ai:
     openai:
-      api-key: ${GPT_KEY}
+      api-key: ${OPENROUTER_KEY}
+      base-url: https://openrouter.ai/api
+      chat:
+        options:
+          model: ${OPENROUTER_MODEL}
+    vectorstore:
+      chroma:
+        uri: ${SPRING_AI_VECTORSTORE_CHROMA_URI}
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${MYSQL_URL}

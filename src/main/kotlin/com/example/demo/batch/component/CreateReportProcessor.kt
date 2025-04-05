@@ -9,9 +9,9 @@ open class CreateReportProcessor(
     private val repository: ReportCachesRepository,
     private val createReportPort: CreateReportPort,
 ) : ItemProcessor<String, Report> {
-    override fun process(item: String): Report? {
-        if (repository.isCacheValid(item)) {
-            return null
+    override fun process(item: String): Report {
+         if (repository.isCacheValid(item)) {
+             return repository.findOne(item).getMainReport()
         }
         return createReport(item)
     }

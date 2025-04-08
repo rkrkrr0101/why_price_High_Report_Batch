@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component
 class GptResponser(
     private val customDateTime: com.example.demo.infra.share.port.CustomDateTime,
     private val model: ChatModel,
-    private val vectorStore: VectorStore,
+   // private val vectorStore: VectorStore,
 ):CreateReportPort{
     private val chatClient: ChatClient =
         ChatClient

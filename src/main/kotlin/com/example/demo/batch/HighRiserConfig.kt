@@ -1,12 +1,15 @@
 package com.example.demo.batch
 
+import com.example.demo.batch.component.CompositeItemWriter
 import com.example.demo.batch.component.CreateReportProcessor
 import com.example.demo.batch.component.HighRiserReader
+import com.example.demo.batch.component.HotStockReportStagingWriter
 import com.example.demo.batch.component.NonTransientExceptionListener
 import com.example.demo.batch.component.ReportCacheWriter
 import com.example.demo.infra.adapter.persistence.reportcache.ReportCachesRepository
 import com.example.demo.infra.adapter.persistence.hotstock.HotStockRepository
 import com.example.demo.infra.adapter.db.HotStockFetcher
+import com.example.demo.infra.adapter.persistence.hotstockreportstaging.HotStockReportStagingRepository
 import com.example.demo.infra.domain.Report
 import com.example.demo.infra.share.port.CreateReportPort
 import org.springframework.ai.retry.NonTransientAiException
@@ -42,17 +45,22 @@ class HighRiserConfig {
         highRiserReader: HighRiserReader,
         createReportProcessor: CreateReportProcessor,
         reportCacheWriter: ReportCacheWriter,
-    ): Step =
-        StepBuilder("highRiserStep", jobRepository)
+        hotStockReportStagingWriter: HotStockReportStagingWriter,
+    ): Step {
+        val compositeItemWriter = CompositeItemWriter<Report>()
+        compositeItemWriter.addWriter(reportCacheWriter)
+        compositeItemWriter.addWriter(hotStockReportStagingWriter)
+        return StepBuilder("highRiserStep", jobRepository)
             .chunk<String, Report>(3, transactionManager)
             .reader(highRiserReader)
             .processor(createReportProcessor)
-            .writer(reportCacheWriter)
+            .writer(compositeItemWriter)
             .faultTolerant()
             .skip(NonTransientAiException::class.java)
             .skipLimit(3)
             .listener(NonTransientExceptionListener::class.java)
             .build()
+    }
 
     @StepScope
     @Bean
@@ -71,4 +79,17 @@ class HighRiserConfig {
     @StepScope
     @Bean
     fun reportCacheWriter(reportCachesRepository: ReportCachesRepository): ReportCacheWriter = ReportCacheWriter(reportCachesRepository)
+
+    @StepScope
+    @Bean
+    fun hotStockReportStagingWriter(hotStockReportStagingRepository: HotStockReportStagingRepository) : HotStockReportStagingWriter = HotStockReportStagingWriter(hotStockReportStagingRepository)
+
+//    @StepScope
+//    @Bean
+//    fun compositeItemWriter(): CompositeItemWriter<Report> {
+//        val compositeItemWriter = CompositeItemWriter<Report>()
+//        compositeItemWriter
+//        return
+//    }
+
 }

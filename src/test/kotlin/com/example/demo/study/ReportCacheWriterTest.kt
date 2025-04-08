@@ -1,7 +1,7 @@
 package com.example.demo.study
 
 import com.example.demo.batch.component.ReportCacheWriter
-import com.example.demo.infra.adapter.persistence.ReportCachesRepository
+import com.example.demo.infra.adapter.persistence.reportcache.ReportCachesRepository
 import com.example.demo.infra.domain.Report
 
 import org.junit.jupiter.api.Test

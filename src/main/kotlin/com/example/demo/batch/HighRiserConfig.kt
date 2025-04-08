@@ -4,12 +4,10 @@ import com.example.demo.batch.component.CreateReportProcessor
 import com.example.demo.batch.component.HighRiserReader
 import com.example.demo.batch.component.NonTransientExceptionListener
 import com.example.demo.batch.component.ReportCacheWriter
-import com.example.demo.infra.adapter.api.HighRisersFetcher
-import com.example.demo.infra.adapter.persistence.ReportCachesRepository
-import com.example.demo.infra.adapter.persistence.HotStockRepository
+import com.example.demo.infra.adapter.persistence.reportcache.ReportCachesRepository
+import com.example.demo.infra.adapter.persistence.hotstock.HotStockRepository
 import com.example.demo.infra.adapter.db.HotStockFetcher
 import com.example.demo.infra.domain.Report
-import com.example.demo.infra.share.port.ApiHelper
 import com.example.demo.infra.share.port.CreateReportPort
 import org.springframework.ai.retry.NonTransientAiException
 import org.springframework.batch.core.Job

@@ -1,4 +1,4 @@
-package com.example.demo.infra.adapter.persistence
+package com.example.demo.infra.adapter.persistence.reportcache
 
 import com.example.demo.infra.domain.Report
 

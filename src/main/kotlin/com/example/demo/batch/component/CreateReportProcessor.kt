@@ -1,6 +1,6 @@
 package com.example.demo.batch.component
 
-import com.example.demo.infra.adapter.persistence.ReportCachesRepository
+import com.example.demo.infra.adapter.persistence.reportcache.ReportCachesRepository
 import com.example.demo.infra.domain.Report
 import com.example.demo.infra.share.port.CreateReportPort
 import org.springframework.batch.item.ItemProcessor

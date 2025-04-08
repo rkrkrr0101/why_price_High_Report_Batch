@@ -9,7 +9,7 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.ResponseEntity
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
-import rkrk.whyprice.config.ApiConfig
+import com.example.demo.infra.config.ApiConfig
 
 class HighRisersFetcher(
     private val apiHelper: ApiHelper,

@@ -1,4 +1,4 @@
-package com.example.demo.infra.adapter.persistence
+package com.example.demo.infra.adapter.persistence.reportcache
 
 import org.springframework.data.jpa.repository.JpaRepository
 

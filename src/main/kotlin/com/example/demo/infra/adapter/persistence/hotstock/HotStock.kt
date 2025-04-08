@@ -1,10 +1,6 @@
-package com.example.demo.infra.adapter.persistence
+package com.example.demo.infra.adapter.persistence.hotstock
 
-import com.example.demo.infra.domain.Report
-import jakarta.persistence.AttributeOverride
-import jakarta.persistence.AttributeOverrides
 import jakarta.persistence.Column
-import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType

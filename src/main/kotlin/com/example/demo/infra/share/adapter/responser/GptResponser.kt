@@ -4,20 +4,22 @@ package com.example.demo.infra.share.adapter.responser
 import com.example.demo.infra.domain.Report
 import com.example.demo.infra.share.port.CreateReportPort
 import org.springframework.ai.chat.client.ChatClient
+import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor
 import org.springframework.ai.chat.messages.SystemMessage
 import org.springframework.ai.chat.messages.UserMessage
 import org.springframework.ai.chat.model.ChatModel
 import org.springframework.ai.chat.model.ChatResponse
 import org.springframework.ai.chat.prompt.Prompt
-import org.springframework.ai.openai.OpenAiChatModel
+import org.springframework.ai.vectorstore.SearchRequest
+import org.springframework.ai.vectorstore.VectorStore
 import org.springframework.stereotype.Component
-import rkrk.whyprice.config.ApiConfig
 
 @Component
 class GptResponser(
     private val customDateTime: com.example.demo.infra.share.port.CustomDateTime,
-    private val model: ChatModel
+    private val model: ChatModel,
+    private val vectorStore: VectorStore,
 ):CreateReportPort{
     private val chatClient: ChatClient =
         ChatClient
@@ -39,6 +41,11 @@ class GptResponser(
         val response =
             chatClient
                 .prompt(prompt)
+//                .advisors(QuestionAnswerAdvisor(
+//                    vectorStore,
+//                    SearchRequest.Builder().topK(5)
+//                        .build())
+//                )
                 .call()
                 .chatResponse()?:throw NotImplementedError()
         return response
@@ -52,22 +59,11 @@ class GptResponser(
     ): Prompt {
         val systemText = "너는 20년 경력의 금융시장 전문가야"
         val systemMessage = SystemMessage(systemText)
-        val userTest = """${assetName}의 현재가격과 최근 ${volatilityTime}시간동안의 변동성과 변동성의 이유를 검색하고 평가해서 레포트로 써줘"""
+        val userTest = """${assetName}의 최근 ${volatilityTime}시간동안의 변동성과 변동성의 이유를 컨텍스트를 사용해서 평가해서 레포트로 써줘"""
         val userMessage = UserMessage(userTest)
         return Prompt(listOf(systemMessage, userMessage))
     }
 
-    private fun createVolatilityPrompt(
-        assetName: String,
-        volatilityTime: Int,
-    ): Prompt {
-        val systemText = "너는 20년 경력의 금융시장 전문가야"
-        val systemMessage = SystemMessage(systemText)
-        val userTest = """${assetName}의 현재가격과 최근 ${volatilityTime}시간동안의 변동성과 변동성의 이유를 검색하고 평가해서 o나 x로만 말해줘"""
-        userTest.plus(" 변동성이 크면 o,작으면 x로 말하면돼")
-        val userMessage = UserMessage(userTest)
-        return Prompt(listOf(systemMessage, userMessage))
-    }
 
     private fun responseToReport(
         assetName: String,

@@ -1,6 +1,6 @@
 package com.example.demo.infra.adapter.db
 
-import com.example.demo.infra.adapter.persistence.HotStockRepository
+import com.example.demo.infra.adapter.persistence.hotstock.HotStockRepository
 
 class HotStockFetcher(
    private val hotStockRepository:HotStockRepository 

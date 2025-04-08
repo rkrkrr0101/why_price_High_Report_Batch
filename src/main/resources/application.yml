@@ -12,12 +12,19 @@ spring:
     openai:
       api-key: ${OPENROUTER_KEY}
       base-url: https://openrouter.ai/api
+      embedding:
+        api-key: ${OPENAI_GPT_KEY}
+        options:
+          model: text-embedding-ada-002
       chat:
         options:
           model: ${OPENROUTER_MODEL}
     vectorstore:
       chroma:
-        uri: ${SPRING_AI_VECTORSTORE_CHROMA_URI}
+        client:
+          host: ${CHROMA_URL}
+          port: ${CHROMA_PORT}
+        collection-name: stock_news_vectors
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${MYSQL_URL}

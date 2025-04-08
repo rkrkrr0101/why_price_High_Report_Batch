@@ -1,4 +1,4 @@
-package rkrk.whyprice.config
+package com.example.demo.infra.config
 
 import io.github.cdimascio.dotenv.Dotenv
 
@@ -13,5 +13,7 @@ class ApiConfig private constructor() {
         fun getKoreaInvKey(): String = dotenv.get("KOREA_INV_KEY")
 
         fun getKoreaSecretKey(): String = dotenv.get("KOREA_INV_SECRET")
+
+        fun getOpenAiKey(): String = dotenv.get("OPENAI_GPT_KEY")
     }
 }

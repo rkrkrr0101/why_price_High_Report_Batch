@@ -1,7 +1,5 @@
-package com.example.demo.infra.adapter.persistence
+package com.example.demo.infra.adapter.persistence.hotstock
 
-import com.example.demo.infra.domain.Report
-import com.example.demo.infra.share.port.CustomDateTime
 import org.springframework.stereotype.Repository
 
 @Repository

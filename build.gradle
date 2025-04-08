@@ -42,6 +42,8 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
 	implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter'
+    implementation 'org.springframework.ai:spring-ai-chroma-store-spring-boot-starter'
+    //implementation 'org.springframework.ai:spring-ai-starter-vector-store-chroma'
 	implementation 'io.github.cdimascio:dotenv-kotlin:6.4.2'
 }
 

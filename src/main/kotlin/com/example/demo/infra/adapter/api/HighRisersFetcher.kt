@@ -1,5 +1,6 @@
 package com.example.demo.infra.adapter.api
 
+import com.example.demo.infra.config.ApiConfig
 import com.example.demo.infra.share.port.ApiHelper
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -9,7 +10,6 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.ResponseEntity
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
-import com.example.demo.infra.config.ApiConfig
 
 class HighRisersFetcher(
     private val apiHelper: ApiHelper,

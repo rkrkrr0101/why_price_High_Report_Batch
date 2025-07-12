@@ -16,7 +16,6 @@ class HotStockReportStaging(
     report: Report,
     id: Long = 0,
 ) {
-
     @Embedded
     @AttributeOverrides(
         AttributeOverride(

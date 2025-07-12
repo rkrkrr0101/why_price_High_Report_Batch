@@ -4,7 +4,6 @@ import com.example.demo.infra.domain.Report
 import com.example.demo.infra.share.port.CustomDateTime
 import org.springframework.stereotype.Repository
 
-
 @Repository
 class ReportCachesRepositoryImpl(
     private val jpaRepository: ReportCachesJpaRepository,

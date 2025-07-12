@@ -8,11 +8,13 @@ import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Component
 
 @Component
-class SwapDataTasklet (
-    private val jdbcTemplate: JdbcTemplate // 생성자 주입 사용
+class SwapDataTasklet(
+    private val jdbcTemplate: JdbcTemplate, // 생성자 주입 사용
 ) : Tasklet {
-
-    override fun execute(contribution: StepContribution, chunkContext: ChunkContext): RepeatStatus {
+    override fun execute(
+        contribution: StepContribution,
+        chunkContext: ChunkContext,
+    ): RepeatStatus {
         val targetTable = "hot_stock_report"
         val stagingTable = "hot_stock_report_staging"
 

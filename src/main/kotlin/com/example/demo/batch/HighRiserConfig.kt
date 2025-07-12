@@ -8,10 +8,10 @@ import com.example.demo.batch.component.HotStockReportStagingWriter
 import com.example.demo.batch.component.NonTransientExceptionListener
 import com.example.demo.batch.component.ReportCacheWriter
 import com.example.demo.batch.component.SwapDataTasklet
-import com.example.demo.infra.adapter.persistence.reportcache.ReportCachesRepository
-import com.example.demo.infra.adapter.persistence.hotstock.HotStockRepository
 import com.example.demo.infra.adapter.db.HotStockFetcher
+import com.example.demo.infra.adapter.persistence.hotstock.HotStockRepository
 import com.example.demo.infra.adapter.persistence.hotstockreportstaging.HotStockReportStagingRepository
+import com.example.demo.infra.adapter.persistence.reportcache.ReportCachesRepository
 import com.example.demo.infra.domain.Report
 import com.example.demo.infra.share.port.CreateReportPort
 import org.springframework.ai.retry.NonTransientAiException
@@ -35,7 +35,6 @@ class HighRiserConfig {
         hotStockReportStagingInitStep: Step,
         highRiserStep: Step,
         swapDataStep: Step,
-
     ): Job =
         JobBuilder("highRiserRankJob", jobRepository)
             .incrementer(RunIdIncrementer())
@@ -68,26 +67,28 @@ class HighRiserConfig {
             .listener(NonTransientExceptionListener::class.java)
             .build()
     }
+
     @JobScope
     @Bean
     fun hotStockReportStagingInitStep(
         jobRepository: JobRepository,
         transactionManager: PlatformTransactionManager,
-        hotStockReportStagingTableInitTasklet: HotStockReportStagingTableInitTasklet): Step{
-        return StepBuilder("hotStockReportStagingInitStep",jobRepository)
-            .tasklet(hotStockReportStagingTableInitTasklet,transactionManager)
+        hotStockReportStagingTableInitTasklet: HotStockReportStagingTableInitTasklet,
+    ): Step =
+        StepBuilder("hotStockReportStagingInitStep", jobRepository)
+            .tasklet(hotStockReportStagingTableInitTasklet, transactionManager)
             .build()
-    }
+
     @JobScope
     @Bean
     fun swapDataStep(
         jobRepository: JobRepository,
         transactionManager: PlatformTransactionManager,
-        swapDataTasklet: SwapDataTasklet): Step{
-        return StepBuilder("swapDataStep",jobRepository)
-            .tasklet(swapDataTasklet,transactionManager)
+        swapDataTasklet: SwapDataTasklet,
+    ): Step =
+        StepBuilder("swapDataStep", jobRepository)
+            .tasklet(swapDataTasklet, transactionManager)
             .build()
-    }
 
     @StepScope
     @Bean
@@ -109,8 +110,6 @@ class HighRiserConfig {
 
     @StepScope
     @Bean
-    fun hotStockReportStagingWriter(hotStockReportStagingRepository: HotStockReportStagingRepository) : HotStockReportStagingWriter = HotStockReportStagingWriter(hotStockReportStagingRepository)
-
-
-
+    fun hotStockReportStagingWriter(hotStockReportStagingRepository: HotStockReportStagingRepository): HotStockReportStagingWriter =
+        HotStockReportStagingWriter(hotStockReportStagingRepository)
 }

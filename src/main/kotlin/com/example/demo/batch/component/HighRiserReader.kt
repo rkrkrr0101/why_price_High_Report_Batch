@@ -4,7 +4,7 @@ import com.example.demo.infra.adapter.db.HotStockFetcher
 import org.springframework.batch.item.ItemReader
 
 open class HighRiserReader(
-    private val hotStockFetcher:HotStockFetcher
+    private val hotStockFetcher: HotStockFetcher,
 ) : ItemReader<String> {
     private var nextIndex = 0
     private var data: List<String> = emptyList()

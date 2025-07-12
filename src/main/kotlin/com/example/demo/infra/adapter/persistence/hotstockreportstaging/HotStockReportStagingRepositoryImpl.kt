@@ -9,7 +9,6 @@ class HotStockReportStagingRepositoryImpl(
     private val jpaRepository: HotStockReportStagingJpaRepository,
     private val customDateTime: CustomDateTime,
 ) : HotStockReportStagingRepository {
-
     override fun saveOrUpdate(report: Report) {
         val staging = jpaRepository.findByReportAssetName(report.getAssetName())
         if (staging == null) {

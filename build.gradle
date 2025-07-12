@@ -20,7 +20,7 @@ repositories {
     maven { url 'https://repo.spring.io/milestone' }//ai 디펜던시 조회장소 추가
 }
 ext {
-    set('springAiVersion', "1.0.0-M6")//spring-ai milestone 6 버전으로 업그레이드
+    set('springAiVersion', "1.0.0")
 }
 dependencyManagement {
     imports {
@@ -41,8 +41,10 @@ dependencies {
 	testImplementation 'org.springframework.batch:spring-batch-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-	implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter'
-    //implementation 'org.springframework.ai:spring-ai-chroma-store-spring-boot-starter'
+
+	implementation 'org.springframework.ai:spring-ai-starter-model-openai'
+    implementation 'org.springframework.ai:spring-ai-starter-vector-store-chroma'
+	implementation 'org.springframework.ai:spring-ai-advisors-vector-store'
 
 	implementation 'io.github.cdimascio:dotenv-kotlin:6.4.2'
 }

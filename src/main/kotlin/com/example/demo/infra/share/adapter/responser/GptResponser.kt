@@ -1,11 +1,10 @@
 package com.example.demo.infra.share.adapter.responser
 
-
 import com.example.demo.infra.domain.Report
 import com.example.demo.infra.share.port.CreateReportPort
 import org.springframework.ai.chat.client.ChatClient
-import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor
+import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor
 import org.springframework.ai.chat.messages.SystemMessage
 import org.springframework.ai.chat.messages.UserMessage
 import org.springframework.ai.chat.model.ChatModel
@@ -19,14 +18,13 @@ import org.springframework.stereotype.Component
 class GptResponser(
     private val customDateTime: com.example.demo.infra.share.port.CustomDateTime,
     private val model: ChatModel,
-   // private val vectorStore: VectorStore,
-):CreateReportPort{
+    private val vectorStore: VectorStore,
+) : CreateReportPort {
     private val chatClient: ChatClient =
         ChatClient
             .builder(model)
             .defaultAdvisors(SimpleLoggerAdvisor())
             .build()
-
 
     override fun createReport(
         assetName: String,
@@ -41,13 +39,17 @@ class GptResponser(
         val response =
             chatClient
                 .prompt(prompt)
-//                .advisors(QuestionAnswerAdvisor(
-//                    vectorStore,
-//                    SearchRequest.Builder().topK(5)
-//                        .build())
-//                )
-                .call()
-                .chatResponse()?:throw NotImplementedError()
+                .advisors(
+                    QuestionAnswerAdvisor
+                        .builder(vectorStore)
+                        .searchRequest(
+                            SearchRequest
+                                .Builder()
+                                .topK(5)
+                                .build(),
+                        ).build(),
+                ).call()
+                .chatResponse() ?: throw NotImplementedError()
         return response
     }
 
@@ -64,11 +66,10 @@ class GptResponser(
         return Prompt(listOf(systemMessage, userMessage))
     }
 
-
     private fun responseToReport(
         assetName: String,
         response: ChatResponse,
-    ) = Report(assetName, response.result.output.text, customDateTime.getNow())
+    ) = Report(assetName, response.result.output.text ?: "no report", customDateTime.getNow())
 
     private fun createReportCotPrompt(
         assetName: String,
@@ -79,13 +80,13 @@ class GptResponser(
         builder.append("다음 단계에 따라 체계적으로 분석해주길 바랍니다")
         builder.append(
             "1.시장 환경:\n" +
-                    "1-1.오늘의 코스피 지수 동향과 $assetName 주가와의 연관성을 설명해주세요.\n" +
-                    "1-2.동종 업계 다른 기업들의 주가 동향과 비교 분석해주세요.",
+                "1-1.오늘의 코스피 지수 동향과 $assetName 주가와의 연관성을 설명해주세요.\n" +
+                "1-2.동종 업계 다른 기업들의 주가 동향과 비교 분석해주세요.",
         )
         builder.append(
             "2.뉴스 및 이벤트:\n" +
-                    "2-1.오늘 ${assetName}와 관련된 주요 뉴스나 이벤트가 있었는지 확인하고 영향을 분석해주세요.\n" +
-                    "2-2.산업 전반에 영향을 줄 수 있는 거시경제 뉴스가 있었는지 확인해주세요.",
+                "2-1.오늘 ${assetName}와 관련된 주요 뉴스나 이벤트가 있었는지 확인하고 영향을 분석해주세요.\n" +
+                "2-2.산업 전반에 영향을 줄 수 있는 거시경제 뉴스가 있었는지 확인해주세요.",
         )
         builder.append("3.투자자 동향: 오늘의 기관, 외국인, 개인 투자자별 순매수 동향을 분석해주세요.")
         builder.append("4.변동성 요인 종합: 위의 분석을 종합하여 오늘의 높은 변동성의 주요 원인을 제시해주세요.")
